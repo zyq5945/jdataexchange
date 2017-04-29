@@ -1,0 +1,29 @@
+{
+  "name": "jdataexchange",
+  "description": "A javascript library can be used for data exchange between html element and json data",
+  "main": "index.js",
+  "authors": [
+    "zyq"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "dataexchange",
+    "jdx",
+    "html",
+    "json",
+    "data",
+    "form",
+    "dom",
+    "element"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}

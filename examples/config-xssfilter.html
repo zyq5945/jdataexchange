@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Config xssFilter</title>
+    <script type="text/javascript" src="../bower_components/xss/dist/xss.js"></script>
+    <script type="text/javascript" src="../src/jdataexchange.js"></script>
+    <script type="text/javascript" src="./config-xssfilter.js"></script>
+</head>
+<body onload="load()">
+<table border="1">
+    <tr>
+        <td>
+            <div id="myinput">
+                <textarea name="json" rows="20" cols="50"></textarea>
+            </div>
+
+        </td>
+        <td>
+            <input type="BUTTON" value=">>" onClick="setVal(this)"/><br/><br/>
+            <input type="BUTTON" value="Reset" onClick="resetVal(this)"/><br/>
+        </td>
+        <td>
+            <div id="mydisplay">
+                Safe: <label name="dangerousHtml">Test Text</label> <br/>
+                Dangerous: <label name="dangerousHtml" data-dangerousHtml="yes">Test Text</label> <br/>
+                Dangerous: <label name="dangerousHtml" data-dangerousHtml="script">Test Text</label> <br/>
+                Ignore: <label name="dangerousHtml" data-dangerousHtml="ignore">Test Text</label> <br/>
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

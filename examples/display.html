@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Display(No input element)</title>
+    <script type="text/javascript" src="../src/jdataexchange.js"></script>
+
+    <script type="text/javascript" src="../src/jdataexchange.js"></script>
+
+    <script type="text/javascript">
+        var input = jdx('myinput');
+        var output = jdx('mydisplay');
+        var data = {};
+
+        function resetVal() {
+            data = {
+                "address": "#ff",
+                "note": "123",
+                "name": "33",
+                "password": "pwd123",
+                "sex": {
+                    "v1": [
+                        "Female"
+                    ],
+                    "v0": [
+                        "Male"
+                    ]
+                },
+                "fruit": {
+                    "v1": [
+                        "Apple",
+                        "Orange"
+                    ],
+                    "v0": [
+                        "Banana"
+                    ]
+                },
+                "country": {
+                    "v1": [
+                        "中国"
+                    ],
+                    "v0": [
+                        "美国",
+                        ""
+                    ]
+                }
+            };
+
+            input.set({json:JSON.stringify(data, null, 4)});
+            setVal() ;
+        }
+        
+        function setVal() {
+            var temp = {};
+            input.get(temp);
+            data = JSON.parse(temp.json);
+            output.set(data);
+        }
+
+        function load() {
+            resetVal();
+        }
+
+    </script>
+
+    <style type = "text/css">
+        .Apple [name="fruit"]
+        {
+            background:#ff0000;
+        }
+        .Banana [name="fruit"]
+        {
+            background:#ff00ff;
+        }
+        .Orange [name="fruit"]
+        {
+            background:#ffff00;
+        }
+    </style>
+
+</head>
+<body onload="load()">
+<table border="1">
+    <tr>
+        <td>
+            <div id="myinput">
+                <textarea name="json" rows="20" cols="50"></textarea>
+            </div>
+
+        </td>
+        <td>
+            <input type="BUTTON" value=">>" onClick="setVal(this)"/><br/><br/>
+            <input type="BUTTON" value="Reset" onClick="resetVal(this)"/><br/>
+        </td>
+        <td>
+            <div id="mydisplay">
+
+                <!--具体标签属性绑定见默认配置参数defaultConfig的htmlElements对应标签的value属性配置-->
+                Hidden: <a name="address" target="_blank">Click Me!<label name="address">Test Text</label> </a> <br/>
+                Name: <label name="name">Test Text</label> <br/>
+                Password: <span name="password">Test Text</span> <br/>
+                Sex: <h3 name="sex" style="display: inline">Test Text</h3><br/>
+                Fruit: <div name="fruit" style="display: inline"><label name="fruit" >Apple</label></div><br/>
+                Country: <label  name="country">Country</label><br/>
+
+                <!--div默认是绑定className，现在修改为innerHTML-->
+                Note 1: <div name="note" style="display: inline" data-jdx-bind="innerHTML">Test Text</div><br/>
+                <!--忽略处理data-jdx-ignore属性为true的元素-->
+                Note 2: <label name="note"data-jdx-ignore="yes">No Changed</label><br/>
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Display With Function</title>
+    <script type="text/javascript" src="../bower_components/moment/moment.js"></script>
+    <script type="text/javascript" src="../src/jdataexchange.js"></script>
+    <script type="text/javascript" src="./display-function.js"></script>
+</head>
+<body onload="load()">
+<table border="1">
+    <tr>
+        <td>
+            <div id="myinput">
+                <textarea name="json" rows="20" cols="50"></textarea>
+            </div>
+
+        </td>
+        <td>
+            <input type="BUTTON" value=">>" onClick="setVal(this)"/><br/><br/>
+            <input type="BUTTON" value="Reset" onClick="resetVal(this)"/><br/>
+        </td>
+        <td>
+            <div id="mydisplay">
+                Safe: <label name="curDateTimeEx" data-jdx-format="YYYYMMDDHHmmssS">Test Text</label> <br/>
+                Dangerous: <label name="curDateTimeEx" data-jdx-format="YYYY-MM-DD h:m:s">Test Text</label> <br/>
+                Ignore: <label name="curDateTimeEx" data-jdx-format="YYYY-MM-DD HH:mm:ss.S">Test Text</label> <br/>
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

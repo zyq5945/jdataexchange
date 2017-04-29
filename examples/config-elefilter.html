@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Config eleFilter</title>
+    <script type="text/javascript" src="../src/jdataexchange.js"></script>
+    <script type="text/javascript" src="./config-elefilter.js"></script>
+
+</head>
+<body onload="load()">
+<table border="1">
+    <tr>
+        <td>
+            <form id="myform">
+                Hidden: <input name="_csrf" type="hidden" value="" data-flag="1"/> <br/>
+                Name: <input name="name" type="text" value=""  data-flag="0"/> <br/>
+                Password: <input name="password" type="password" value=""  data-flag="1"/> <br/>
+                Sex: <input name="sex" type="radio" value="Male" checked="checked"  data-flag="1"/>
+                <input name="sex" type="radio" value="Female" data-flag="1" /> <br/>
+                Fruit: <input name="fruit" type="checkbox" value="Apple" data-flag="0"/>Apple
+                <input name="fruit" type="checkbox" value="Banana" data-flag="0"/>Banana
+                <input name="fruit" type="checkbox" value="Orange" data-flag="0"/>Orange <br/>
+                Country: <select name="country">
+                <option value="">--请选择--</option>
+                <option value="中国">中国</option>
+                <option value="美国">美国</option>
+                </select><br/>
+                Note: <textarea name="note"></textarea><br/>
+                <input type="reset" value="Reset"/> <br/>
+            </form>
+        </td>
+        <td>
+            <input type="BUTTON" value=">>" onClick="getVal(this)"/><br/><br/>
+            <input type="BUTTON" value="<<" onClick="setVal(this)"/><br/><br/>
+
+            <input type="BUTTON" value=">> 0" onClick="getVal0(this)"/><br/><br/>
+            <input type="BUTTON" value="<< 0" onClick="setVal0(this)"/><br/><br/>
+
+            <input type="BUTTON" value=">> 1" onClick="getVal1(this)"/><br/><br/>
+            <input type="BUTTON" value="<< 1" onClick="setVal1(this)"/><br/><br/>
+        </td>
+        <td>
+            <div id="mydisplay">
+                <textarea name="json" rows="20" cols="50"></textarea>
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
