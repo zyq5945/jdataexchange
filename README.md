@@ -22,40 +22,46 @@ jDataExchange与html5的formdata的区别：
 
 ## 如何使用
 1. 设计好你的网页界面，[例如](./examples/simple.html)如下：
-`<form id="myform">
-  Hidden: <input name="_csrf" type="hidden" value=""/> <br/>
-  Name: <input name="name" type="text" value="" /> <br/>
-  Password: <input name="password" type="password" value="" /> <br/>
-  Sex: <input name="sex" type="radio" value="Male" checked="checked"/>
-  <input name="sex" type="radio" value="Female"/> <br/>
-  Fruit: <input name="fruit" type="checkbox" value="Apple"/>Apple
-  <input name="fruit" type="checkbox" value="Banana"/>Banana
-  <input name="fruit" type="checkbox" value="Orange"/>Orange <br/>
-  Country: <select name="country">
-  <option value="">--请选择--</option>
-  <option value="中国">中国</option>
-  <option value="美国">美国</option>
-  </select><br/>
-  Note: <textarea name="note"></textarea><br/>
-  <input type="reset" value="Reset"/> <br/>
-</form>`
+```html
+<form id="myform">
+    Hidden: <input name="_csrf" type="hidden" value=""/> <br/>
+    Name: <input name="name" type="text" value="" /> <br/>
+    Password: <input name="password" type="password" value="" /> <br/>
+    Sex: <input name="sex" type="radio" value="Male" checked="checked"/>
+    <input name="sex" type="radio" value="Female"/> <br/>
+    Fruit: <input name="fruit" type="checkbox" value="Apple"/>Apple
+    <input name="fruit" type="checkbox" value="Banana"/>Banana
+    <input name="fruit" type="checkbox" value="Orange"/>Orange <br/>
+    Country: <select name="country">
+    <option value="">--请选择--</option>
+    <option value="中国">中国</option>
+    <option value="美国">美国</option>
+    </select><br/>
+    Note: <textarea name="note"></textarea><br/>
+    <input type="reset" value="Reset"/> <br/>
+</form>
+```
 
 2. 使用script标签导入jDataExchange
-`<script type="text/javascript" src="../src/jdataexchange.js"></script>`
+```html
+<script type="text/javascript" src="../src/jdataexchange.js"></script>
+```
 
 3. 输入表单后编写如下js代码从界面获取数据值填充到json对象中
-`var jsonObj = {};
+```javascript
+var jsonObj = {};
 jdx("myform").get(jsonObj);
-`
+```
 调用如上js代码后示例的JSON对象填充如下
-`{
+```javascript
+{
     "_csrf": "xxxxxxxx",
     "note": "xxxxxxxx",
     "name": "xxxxxxxx",
     "password": "xxxxxxxx",
     "sex": {
         "v1": [
-            "xxxxxxxx"
+        "xxxxxxxx"
         ],
         "v0": [
             "xxxxxxxx"
@@ -79,12 +85,15 @@ jdx("myform").get(jsonObj);
             "xxxxxxxx"
         ]
     }
-}`
+}
+```
 
 4. 将json对象值设置到表单也是在表单加载完成后调用如下js代码
-`var jsonObj = {...};
+```javascript
+var jsonObj = {...};
 jdx("myform").set(jsonObj);
-`
+```
+
 
 ## API jdx
 * @brief jDataExchange的构造函数
@@ -93,7 +102,9 @@ jdx("myform").set(jsonObj);
 * @param win window对象，默认在浏览器中不需要设置，在nodejs中，当htmlEle为字符串时需要设置win对象
 * @return 本例类实例对象
 *
-`function DataExchange(htmlEle, config, win)`
+```javascript
+function DataExchange(htmlEle, config, win)
+```
 
 
 ## API get
@@ -102,7 +113,9 @@ jdx("myform").set(jsonObj);
 * @param paramConfig 配置参数，可以不写，如有效将和当前实例的配置对象合并成新的配置参数
 * @return 本例类实例对象
 *
-`DataExchange.prototype.get = function (jsonObj, paramConfig)`
+```javascript
+DataExchange.prototype.get = function (jsonObj, paramConfig)
+```
 
 ## API set
 * @brief 将json对象的值设置到html界面元素中
@@ -110,7 +123,9 @@ jdx("myform").set(jsonObj);
 * @param paramConfig 配置参数，可以不写，如有效将和当前实例的配置对象合并成新的配置参数
 * @return 本例类实例对象
 *
-`DataExchange.prototype.set = function (jsonObj, paramConfig)`
+```javascript
+DataExchange.prototype.set = function (jsonObj, paramConfig)
+```
 
 ## API getElements
 * @brief 将html的element对象获取到json对象
@@ -118,10 +133,13 @@ jdx("myform").set(jsonObj);
 * @param paramConfig 配置参数，可以不写，如有效将和当前实例的配置对象合并成新的配置参数
 * @return 本例类实例对象
 *
-`DataExchange.prototype.getElements = function (jsonObj, paramConfig)`
+```javascript
+DataExchange.prototype.getElements = function (jsonObj, paramConfig)
+```
 
 ## 默认配置参数
-`var defaultConfig = {
+```javascript
+var defaultConfig = {
     // element属性值与json键一一对应起来，默认是element的name属性
     // 调用set函数的会做两个特殊处理：
     //  1. 当有同名的函数存在会调用函数计算结果值给element，返回null或者undefined忽略设置
@@ -158,34 +176,40 @@ jdx("myform").set(jsonObj);
 
     // 需要处理的只有一个值域的element
     htmlElements: [
-        {name: 'textarea', value: 'value', input: true},
-        {name: 'label', value: 'innerHTML'},
-        {name: 'button', value: 'disabled'},
-        {name: 'a', value: 'href'},
-        {name: 'img', value: 'src'},
-        {name: 'td', value: 'innerHTML'},
-        {name: 'tr', value: 'className'},
-        {name: 'h1', value: 'innerHTML'},
-        {name: 'h2', value: 'innerHTML'},
-        {name: 'h3', value: 'innerHTML'},
-        {name: 'h4', value: 'innerHTML'},
-        {name: 'h5', value: 'innerHTML'},
-        {name: 'h6', value: 'innerHTML'},
-        {name: 'span', value: 'innerHTML'},
-        {name: 'div', value: 'className'}
+            {name: 'textarea', value: 'value', input: true},
+            {name: 'label', value: 'innerHTML'},
+            {name: 'button', value: 'disabled'},
+            {name: 'a', value: 'href'},
+            {name: 'img', value: 'src'},
+            {name: 'td', value: 'innerHTML'},
+            {name: 'tr', value: 'className'},
+            {name: 'h1', value: 'innerHTML'},
+            {name: 'h2', value: 'innerHTML'},
+            {name: 'h3', value: 'innerHTML'},
+            {name: 'h4', value: 'innerHTML'},
+            {name: 'h5', value: 'innerHTML'},
+            {name: 'h6', value: 'innerHTML'},
+            {name: 'span', value: 'innerHTML'},
+            {name: 'div', value: 'className'}
     ]
 };
-`
+```
 
 ## 代码测试
 测试代码使用了模板字符串，需要安装支持模板字符串版本nodejs
 1. 进入项目目录，安装依赖
-`cd jdataexchange
-npm install`
+```
+cd jdataexchange
+npm install
+```
 2. 代码测试
-`npm run test`
+```
+npm run test
+```
 3. 代码覆盖(覆盖率99%)
-`npm run cover`
+```
+npm run cover
+```
 
-##	授权协议
+##    授权协议
 基于[MIT](./LICENSE.md)协议。
