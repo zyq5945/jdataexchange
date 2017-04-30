@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Input</title>
+    <script type="text/javascript" src="../../src/jdataexchange.js"></script>
+
+    <script type="text/javascript">
+        var input = jdx('myform');
+        var output = jdx('mydisplay');
+        var data = {};
+
+        function getVal() {
+            input.get(data);
+            output.set({json:JSON.stringify(data, null, 4)})
+        }
+
+        function setVal() {
+            var temp = {};
+            output.get(temp);
+            data = JSON.parse(temp.json);
+            input.set(data);
+        }
+
+        function load() {
+            <!--实现了前端与后端分离，当需要在做前端设计的时候注释掉PHP代码-->
+            <!--?php echo "data=$output ;" ?-->
+            <?php echo "data=$output ;" ?>
+            input.set(data);
+        }
+
+    </script>
+
+
+</head>
+<body onload="load()">
+<table border="1">
+    <tr>
+        <td>
+            <form id="myform">
+                Hidden: <input name="_csrf" type="hidden" value=""/> <br/>
+                Name: <input name="name" type="text" value="" /> <br/>
+                Password: <input name="password" type="password" value="" /> <br/>
+                Sex: <input name="sex" type="radio" value="Male" checked="checked"/>
+                <input name="sex" type="radio" value="Female"/> <br/>
+                Fruit: <input name="fruit" type="checkbox" value="Apple"/>Apple
+                <input name="fruit" type="checkbox" value="Banana"/>Banana
+                <input name="fruit" type="checkbox" value="Orange"/>Orange <br/>
+                Country: <select name="country">
+                <option value="">--请选择--</option>
+                <option value="中国">中国</option>
+                <option value="美国">美国</option>
+            </select><br/>
+                Note: <textarea name="note"></textarea><br/>
+                <input type="reset" value="Reset"/> <br/>
+            </form>
+        </td>
+        <td>
+            <input type="BUTTON" value=">>" onClick="getVal(this)"/><br/><br/>
+            <input type="BUTTON" value="<<" onClick="setVal(this)"/><br/>
+        </td>
+        <td>
+            <div id="mydisplay">
+                <textarea name="json" rows="20" cols="50"></textarea>
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

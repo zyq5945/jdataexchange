@@ -34,3 +34,15 @@ bower i moment xss json3`
 ## elements.html
 展示了使用getElements获取标签进行操作标签例子
 
+
+## react-jdataexchange
+展示了在react中json数据与form进行数据获取与设置
+需要安装react依赖，然后运行react
+````
+npm install
+npm run start
+````
+
+## php-jdataexchange
+展示了在php中json数据与form进行数据获取与设置
+
