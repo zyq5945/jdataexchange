@@ -5,6 +5,7 @@ jDataExchange——一个用来做html界面元素与json数据进行交换的ja
 
 ## 描述
 为了从繁琐的html的数据表单中进行数据与json数据交换后，表单的元素input,select,textarea等的值属性名称都是固定的不变的，利用javascript的反射机制将json数据对应key与表单元素相应的key(一般是name属性的值作为key)一一对应起来，从而实现了jDataExchange这个库来使用简单的几句JS代码实现了从表单数据获取数据到json数据中与将json数据设置到表单数据中。
+jDataExchange采用是JS+DOM的方式进行编写的，所以jDataExchange可以与其他框架如React,PHP等无缝对接使用。
 jDataExchange与html5的formdata的区别：
 优点：
 1. 不需要浏览器的html5特性支持，
