@@ -1,9 +1,9 @@
-﻿/**
+﻿/*
  ******************************************************************************
  * @file     jdataexchange.js
  * @author   zyq5945@126.com
- * @version  V0.01
- * @date     2017/03/28
+ * @version  V0.02
+ * @date     2019/02/08
  * @licence  MIT
  * @brief    一个用来做html界面元素与json数据进行交换的javascript库
  ******************************************************************************
@@ -14,8 +14,8 @@
     var defaultConfig = {
         // element属性值与json键一一对应起来，默认是element的name属性
         // 调用set函数的会做两个特殊处理：
-        //  1. 当有同名的函数存在会调用函数计算结果值给element，返回null或者undefined忽略设置
-        /**function(eleItem, attrName, jsonObj, value, jsonKey, config)
+        // 当有同名的函数存在会调用函数计算结果值给element，返回null或者undefined忽略设置
+        /* function(eleItem, attrName, jsonObj, value, jsonKey, config)
          *
          * @brief 通过调用同名的function，将返回值设置给eleItem的attrName属性
          * @param eleItem 要设置的element
@@ -26,13 +26,8 @@
          * @param config 配置参数
          * @return 最终的value将要设置给element的attrName属性，返回null或者undefined忽略设置
          */
-        //  2. 当有同名的Object{v1:[...]}，会去v1数组的第一个值作为数据值
+        
         key: 'name',
-
-        // 具有分组的element(input和radio的check，select的option)，选中分组
-        v1: 'v1',
-        // 具有分组的element(input和radio的check，select的option)，未选中分组
-        v0: 'v0',
 
         // 函数 function(eleItem, jsonKey, config) 返回true表示处理该eleItem,否则忽略
         eleFilter: null,
@@ -62,6 +57,7 @@
             {name: 'h5', value: 'innerHTML'},
             {name: 'h6', value: 'innerHTML'},
             {name: 'span', value: 'innerHTML'},
+            {name: 'p', value: 'innerHTML'},
             {name: 'div', value: 'className'}
         ]
     };
@@ -141,57 +137,41 @@
     }
 
     function setCheckedToList(jsonObj, jsonKey, jsonValue, isChecked, config) {
-        var v1 = config.v1;
-        var v0 = config.v0;
 
-        var store = jsonObj[jsonKey] || {};
-        var listV1 = store[v1] || [];
-        var listV0 = store[v0] || [];
+        var list = jsonObj[jsonKey] || [];
 
         if (isChecked) {
-            arraySafePush(listV1, jsonValue);
-            arraySafeRemove(listV0, jsonValue);
+            arraySafePush(list, jsonValue);
         }
         else {
-            arraySafePush(listV0, jsonValue);
-            arraySafeRemove(listV1, jsonValue);
+            arraySafeRemove(list, jsonValue);
         }
 
-        store[v1] = listV1;
-        store[v0] = listV0;
-        jsonObj[jsonKey] = store;
+        jsonObj[jsonKey] = list;
         return jsonObj;
     }
 
     function getCheckedFromList(jsonObj, jsonKey, val, config) {
-        var v1 = config.v1;
 
-        var store = jsonObj[jsonKey];
-        if (!store) {
-            return false;
-        }
-        var listV1 = store[v1];
-        if (!listV1 || !listV1.length || listV1.length === 0) {
+        var list = jsonObj[jsonKey];
+ 
+        if (!list || !list.length || list.length === 0) {
             return false;
         }
 
-        var index = arrayIndexOf(listV1, val);
+        var index = arrayIndexOf(list, val);
         return index !== -1;
     }
 
     function getSingleValueFromList(jsonObj, jsonKey, config) {
-        var v1 = config.v1;
 
-        var store = jsonObj[jsonKey];
-        if (!store) {
-            return '';
-        }
-        var listV1 = store[v1];
-        if (!listV1 || !listV1.length || listV1.length === 0) {
+        var list = jsonObj[jsonKey];
+
+        if (!list || !list.length || list.length === 0) {
             return '';
         }
 
-        return listV1.join(' ');
+        return list.join(' ');
     }
 
 
@@ -252,25 +232,42 @@
         }
     }
 
-    function getValueWithGroup(eleItem, attrName, jsonObj, jsonKey, group, config) {
+    function getValueWithGroup(eleItem, attrName, jsonObj, jsonKey, group, single, config) {
         var jsonValue = getElementValue(eleItem, attrName);
         if (isValidValue(group)) {
             var bGroup = getElementValue(eleItem, group);
-            setCheckedToList(jsonObj, jsonKey, jsonValue, bGroup, config);
+            if (single) {
+                if (bGroup) {
+                    jsonObj[jsonKey] = jsonValue;  
+                }
+                else if (jsonObj[jsonKey] === jsonValue){
+                    jsonObj[jsonKey] = '';    
+                }    
+            }
+            else {
+                setCheckedToList(jsonObj, jsonKey, jsonValue, bGroup, config);
+            }           
         }
         else {
             jsonObj[jsonKey] = jsonValue;
         }
     }
 
-    function setValueWithGroup(eleItem, attrName, jsonObj, jsonKey, group, config) {
+    function setValueWithGroup(eleItem, attrName, jsonObj, jsonKey, group, single, config) {
         if (!(jsonKey in jsonObj)) {
             return;
         }
 
         if (isValidValue(group)) {
-            var jsonValue = getCheckedFromList(jsonObj, jsonKey, getElementValue(eleItem, attrName), config);
-            setValueWarpFilter(eleItem, group, jsonObj, jsonValue, jsonKey, config);
+            if (single) {
+                var jsonValue = jsonObj[jsonKey] === getElementValue(eleItem, attrName);
+                setValueWarpFilter(eleItem, group, jsonObj, jsonValue, jsonKey, config);    
+            }
+            else {
+                var jsonValue = getCheckedFromList(jsonObj, jsonKey, getElementValue(eleItem, attrName), config);
+                setValueWarpFilter(eleItem, group, jsonObj, jsonValue, jsonKey, config);
+            }  
+            
         }
         else {
             var jsonValue = jsonObj[jsonKey];
@@ -278,7 +275,8 @@
         }
     }
 
-    /**
+
+    /*
      * @brief jDataExchange的构造函数
      * @param htmlEle 需要进行操作的element对象，也可以是element的id字符串
      * @param config 配置参数，可以不写，如有效将和defautlConfig合并成新的配置参数
@@ -313,7 +311,7 @@
 
     DataExchange.defaultConfig = defaultConfig;
 
-    /**
+    /*
      * @brief 将form的输入element值获取到json对象
      * @param jsonObj json对象
      * @param paramConfig 配置参数，可以不写，如有效将和当前实例的配置对象合并成新的配置参数
@@ -333,7 +331,7 @@
                 }
 
                 var attrName = getElementValue(eleItem, config.customBind) || tagEle.value;
-                getValueWithGroup(eleItem, attrName, jsonObj, jsonKey, null, config);
+                getValueWithGroup(eleItem, attrName, jsonObj, jsonKey, null, false, config);
             });
         });
 
@@ -341,8 +339,10 @@
             var type = getElementValue(eleItem, 'type');
             switch (type) {
                 case 'radio':
+                    getValueWithGroup(eleItem, 'value', jsonObj, jsonKey, 'checked', true, config);
+                    break;
                 case 'checkbox':
-                    getValueWithGroup(eleItem, 'value', jsonObj, jsonKey, 'checked', config);
+                    getValueWithGroup(eleItem, 'value', jsonObj, jsonKey, 'checked', false, config);
                     break;
 
                 case 'file':
@@ -351,21 +351,22 @@
                 case 'submit':
                     break;
                 default:
-                    getValueWithGroup(eleItem, 'value', jsonObj, jsonKey, null, config);
+                    getValueWithGroup(eleItem, 'value', jsonObj, jsonKey, null, false, config);
                     break;
             }
         });
 
         this.filterForeach('select', config, function select2Json(eleItem, jsonKey) {
+            var multiple = getElementValue(eleItem, 'multiple');
             arrayForeach(eleItem.getElementsByTagName('OPTION'), function option2Json(eleOption) {
-                getValueWithGroup(eleOption, 'value', jsonObj, jsonKey, 'selected', config);
+                getValueWithGroup(eleOption, 'value', jsonObj, jsonKey, 'selected', !multiple, config);
             });
         });
 
         return this;
     };
 
-    /**
+    /*
      * @brief 将json对象的值设置到html界面元素中
      * @param jsonObj json对象
      * @param paramConfig 配置参数，可以不写，如有效将和当前实例的配置对象合并成新的配置参数
@@ -381,7 +382,7 @@
         arrayForeach(config.htmlElements, function configElements(tagEle) {
             that.filterForeach(tagEle.name, config, function json2Element(eleItem, jsonKey) {
                 var attrName = getElementValue(eleItem, config.customBind) || tagEle.value;
-                setValueWithGroup(eleItem, attrName, jsonObj, jsonKey, null, config);
+                setValueWithGroup(eleItem, attrName, jsonObj, jsonKey, null, false, config);
             });
         });
 
@@ -390,37 +391,35 @@
             var jsonValue = null;
             switch (type) {
                 case 'radio':
+                    setValueWithGroup(eleItem, 'value', jsonObj, jsonKey, 'checked', true, config);
+                    break;
                 case 'checkbox':
-                    setValueWithGroup(eleItem, 'value', jsonObj, jsonKey, 'checked', config);
+                    setValueWithGroup(eleItem, 'value', jsonObj, jsonKey, 'checked', false, config);
                     break;
                 case 'file':
                 case 'button':
                 case 'reset':
                 case 'submit':
-                    setValueWithGroup(eleItem, 'disabled', jsonObj, jsonKey, null, config);
+                    setValueWithGroup(eleItem, 'disabled', jsonObj, jsonKey, null, false, config);
                     break;
                 default:
-                    // NOTE some time have an error, html5 element validate ?!
-                    try {
-                        setValueWithGroup(eleItem, 'value', jsonObj, jsonKey, null, config);
-                    }
-                    catch (e) {
-                        console.error('------jdx error set input ' + jsonKey + ' ' + jsonValue + '\n Error:' + e);
-                    }
+                    // NOTE some time have an error, html5 element validate ?!                   
+                    setValueWithGroup(eleItem, 'value', jsonObj, jsonKey, null, false, config);            
                     break;
             }
         });
 
         this.filterForeach('select', config, function json2Select(eleItem, jsonKey) {
+            var multiple = getElementValue(eleItem, 'multiple');
             arrayForeach(eleItem.getElementsByTagName('OPTION'), function json2Option(eleOption) {
-                setValueWithGroup(eleOption, 'value', jsonObj, jsonKey, 'selected', config);
+                setValueWithGroup(eleOption, 'value', jsonObj, jsonKey, 'selected', !multiple, config);
             });
         });
 
         return this;
     };
 
-    /**
+    /*
      * @brief 将html的element对象获取到json对象
      * @param jsonObj json对象
      * @param paramConfig 配置参数，可以不写，如有效将和当前实例的配置对象合并成新的配置参数
@@ -461,13 +460,12 @@
                 setCheckedToList(jsonObj, jsonKey, eleOption, eleOption.selected, config);
             });
 
-            jsonObj[jsonKey].select = eleItem;
         });
 
         return this;
     };
 
-    /**
+    /*
      * @brief 获取需要操作的根html
      * @return 根html
      */
@@ -483,7 +481,7 @@
         return htmlEle;
     };
 
-    /**
+    /*
      * @brief  获取标签数组进行筛选后进行回调
      * @param tagName tag标签名称
      * @param paramConfig 配置参数，可以不写，如有效将和当前实例的配置对象合并成新的配置参数
@@ -514,7 +512,7 @@
         });
     };
 
-    /**
+    /*
      * @brief  合并配置选项
      * @param config 需要合并的配置选项
      * @param customConfig 是否重新定义配置选项
@@ -537,26 +535,12 @@
     };
 
 
-    /* istanbul ignore next */
+    /* jdataexchange ignore next */
     var root = typeof window === 'object' ? window : (typeof global === 'object' ? global : this);
-
-    // IE6 no console
-    /* istanbul ignore next */
-    var console = root.console || {};
-    /* istanbul ignore next */
-    console.error = console.error || function () {
-        };
-    /* istanbul ignore next */
-    console.log = console.log || function () {
-        };
-    /* istanbul ignore next */
-    console.warn = console.warn || function () {
-        };
-
 
     var jDataExchange = DataExchange;
 
-    /* istanbul ignore next */
+    /* jdataexchange ignore next */
     // Node.js
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = jDataExchange;

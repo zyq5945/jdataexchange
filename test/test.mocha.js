@@ -354,13 +354,9 @@ describe('test input radio', function () {
             const eleChild1 = document.getElementById(`${idChild}1`);
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
-            var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
-            jdx(eleRoot).getElements(eles);
-            ElementsGroupArray(list, inputChecked, null, listV1, listV0);
-            checkElementsGroupValue(eles[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild1);
+
+            jdx(eleRoot).getElements(eles);           
+            check2ArrayEqual(eles[jsonKey] , [eleChild1]);
         });
 
         it('test jdx get', function () {
@@ -368,15 +364,13 @@ describe('test input radio', function () {
             const eleChild1 = document.getElementById(`${idChild}1`);
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
-            var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
 
-            jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild1[eleVal]);
+
+            const curVal = `${defaultVal}1`;
+            const eleChild = eleChild1; 
+            assert(jsonGet[jsonKey] === curVal && eleChild[eleVal] === curVal);
+            checkElementSingleValue(eleChild, eleChild, eleVal, jsonGet[jsonKey]);
         });
 
         it('test jdx set', function () {
@@ -384,17 +378,14 @@ describe('test input radio', function () {
             const eleChild1 = document.getElementById(`${idChild}1`);
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
-            var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
 
-            jsonSet[jsonKey] = {v1:[`${defaultVal}2`]};
+            const curVal = `${defaultVal}2`;
+            jsonSet[jsonKey] = curVal;
             jdx(idRoot).set(jsonSet);
-            jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild2[eleVal]);
+            const eleChild = eleChild2; 
+            assert(jsonGet[jsonKey] === curVal && eleChild[eleVal] === curVal);
+            checkElementSingleValue(eleChild, eleChild, eleVal, jsonGet[jsonKey]);
         });
     });
 });
@@ -429,13 +420,8 @@ describe('test input checkbox', function () {
             const eleChild1 = document.getElementById(`${idChild}1`);
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
-            var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
-            jdx(eleRoot).getElements(eles);
-            ElementsGroupArray(list, inputChecked, null, listV1, listV0);
-            checkElementsGroupValue(eles[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild1);
+            jdx(eleRoot).getElements(eles);           
+            check2ArrayEqual(eles[jsonKey] , [eleChild1]);
         });
 
         it('test jdx get', function () {
@@ -444,14 +430,13 @@ describe('test input checkbox', function () {
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
             var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
+            var listV = [];
 
             jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild1[eleVal]);
+            ElementsGroupArray(list, inputChecked, eleVal, listV);
+            checkElementsGroupValue(jsonGet[jsonKey], listV);
+            assert(listV[0] === eleChild1[eleVal]);
         });
 
         it('test jdx set', function () {
@@ -460,32 +445,29 @@ describe('test input checkbox', function () {
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
             var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
+            var listV = [];
 
             jsonSet[jsonKey] = null;
             jdx(idRoot).set(jsonSet);
             jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            check2ArrayEqual(jsonGet[jsonKey].v0, listV0);
+            ElementsGroupArray(list, inputChecked, eleVal, listV);
+            checkElementsGroupValue(jsonGet[jsonKey], listV);
 
-            jsonSet[jsonKey] = {v1:null};
+            jsonSet[jsonKey] = null;
             jdx(idRoot).set(jsonSet);
             jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            check2ArrayEqual(jsonGet[jsonKey].v0, listV0);
+            ElementsGroupArray(list, inputChecked, eleVal, listV);
+            checkElementsGroupValue(jsonGet[jsonKey], listV);
 
-            jsonSet[jsonKey] = {v1:[`${defaultVal}2`]};
+            jsonSet[jsonKey] = [`${defaultVal}2`];
             jdx(idRoot).set(jsonSet);
             jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild2[eleVal]);
+            ElementsGroupArray(list, inputChecked, eleVal, listV);
+            checkElementsGroupValue(jsonGet[jsonKey], listV);
+            assert(listV[0] === eleChild2[eleVal]);
         });
     });
 });
@@ -523,13 +505,9 @@ describe('test select simple', function () {
             const eleChild1 = document.getElementById(`${idChild}1`);
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
-            var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
-            jdx(eleRoot).getElements(eles);
-            ElementsGroupArray(list, inputChecked, null, listV1, listV0);
-            checkElementsGroupValue(eles[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild1);
+
+            jdx(eleRoot).getElements(eles);           
+            check2ArrayEqual(eles[jsonKey] , [eleChild1]);
         });
 
         it('test jdx get', function () {
@@ -537,15 +515,13 @@ describe('test select simple', function () {
             const eleChild1 = document.getElementById(`${idChild}1`);
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
-            var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
 
-            jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild1[eleVal]);
+
+            const curVal = `${defaultVal}1`;
+            const eleChild = eleChild1; 
+            assert(jsonGet[jsonKey] === curVal && eleChild[eleVal] === curVal);
+            checkElementSingleValue(eleChild, eleChild, eleVal, jsonGet[jsonKey]);
         });
 
         it('test jdx set', function () {
@@ -553,17 +529,14 @@ describe('test select simple', function () {
             const eleChild1 = document.getElementById(`${idChild}1`);
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
-            var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
-
-            jsonSet[jsonKey] = {v1:[`${defaultVal}2`]};
+            
+            const curVal = `${defaultVal}2`;
+            jsonSet[jsonKey] = curVal;
             jdx(idRoot).set(jsonSet);
-            jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild2[eleVal]);
+            const eleChild = eleChild2; 
+            assert(jsonGet[jsonKey] === curVal && eleChild[eleVal] === curVal);
+            checkElementSingleValue(eleChild, eleChild, eleVal, jsonGet[jsonKey]);
         });
     });
 });
@@ -601,13 +574,8 @@ describe('test select multiple', function () {
             const eleChild1 = document.getElementById(`${idChild}1`);
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
-            var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
-            jdx(eleRoot).getElements(eles);
-            ElementsGroupArray(list, inputChecked, null, listV1, listV0);
-            checkElementsGroupValue(eles[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild1);
+            jdx(eleRoot).getElements(eles);           
+            check2ArrayEqual(eles[jsonKey] , [eleChild1]);
         });
 
         it('test jdx get', function () {
@@ -616,14 +584,13 @@ describe('test select multiple', function () {
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
             var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
+            var listV = [];
 
             jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild1[eleVal]);
+            ElementsGroupArray(list, inputChecked, eleVal, listV);
+            checkElementsGroupValue(jsonGet[jsonKey], listV);
+            assert(listV[0] === eleChild1[eleVal]);
         });
 
         it('test jdx set', function () {
@@ -632,32 +599,29 @@ describe('test select multiple', function () {
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
             var list = [eleChild1, eleChild2, eleChild3];
-            var listV1 = [];
-            var listV0 = [];
+            var listV = [];
 
             jsonSet[jsonKey] = null;
             jdx(idRoot).set(jsonSet);
             jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            check2ArrayEqual(jsonGet[jsonKey].v0, listV0);
+            ElementsGroupArray(list, inputChecked, eleVal, listV);
+            checkElementsGroupValue(jsonGet[jsonKey], listV);
 
-            jsonSet[jsonKey] = {v1:null};
+            jsonSet[jsonKey] = null;
             jdx(idRoot).set(jsonSet);
             jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            check2ArrayEqual(jsonGet[jsonKey].v0, listV0);
+            ElementsGroupArray(list, inputChecked, eleVal, listV);
+            checkElementsGroupValue(jsonGet[jsonKey], listV);
 
-            jsonSet[jsonKey] = {v1:[`${defaultVal}2`]};
+            jsonSet[jsonKey] = [`${defaultVal}2`];
             jdx(idRoot).set(jsonSet);
             jdx(eleRoot).getElements(eles);
             jdx(eleRoot).get(jsonGet);
-            ElementsGroupArray(list, inputChecked, eleVal, listV1, listV0);
-            checkElementsGroupValue(jsonGet[jsonKey], listV1, listV0);
-            assert(listV1[0] === eleChild2[eleVal]);
+            ElementsGroupArray(list, inputChecked, eleVal, listV);
+            checkElementsGroupValue(jsonGet[jsonKey], listV);
+            assert(listV[0] === eleChild2[eleVal]);
         });
     });
 });
@@ -866,13 +830,13 @@ describe('test lable innerHTML', function () {
             const eleChild = document.getElementById(idChild);
 
             var curVal = '';
-            jsonSet[jsonKey] = {v1:curVal};
+            jsonSet[jsonKey] = curVal;
             jdx(idRoot).set(jsonSet);
             assert(eleChild[eleVal] === curVal);
             checkElementSingleValue(eleChild, eleChild, eleVal, curVal);
 
             var curVal = 'Input Value000';
-            jsonSet[jsonKey] = {v1:[curVal]};
+            jsonSet[jsonKey] = [curVal];
             jdx(idRoot).set(jsonSet);
             assert(eleChild[eleVal] === curVal);
             checkElementSingleValue(eleChild, eleChild, eleVal, curVal);
@@ -897,7 +861,7 @@ describe('test lable innerHTML', function () {
             const eleChild = document.getElementById(idChild);
 
             var curVal = defaultVal;
-            jsonSet[jsonKey] = {v1:[curVal]};
+            jsonSet[jsonKey] = [curVal];
             jdx(eleRoot).set(jsonSet);
             assert(eleChild[eleVal] === curVal);
             checkElementSingleValue(eleChild, eleChild, eleVal, curVal);
@@ -919,7 +883,7 @@ describe('test lable innerHTML', function () {
             const eleChild = document.getElementById(idChild);
 
             var curVal = defaultVal;
-            jsonSet[jsonKey] = {v1:[curVal]};
+            jsonSet[jsonKey] = [curVal];
             jdx(eleRoot).set(jsonSet);
             assert(eleChild[eleVal] === curVal);
             checkElementSingleValue(eleChild, eleChild, eleVal, curVal);
@@ -946,8 +910,21 @@ describe('test lable innerHTML', function () {
             assert(justForCodeCover === true);
 
             var curVal = null;
-            jsonSet[jsonKey] = {v1:[curVal]};
+            jsonSet[jsonKey] = [curVal];
             jdx(idRoot).set(jsonSet);
+            var defaultVal1 = '';
+            assert(eleChild[eleVal] === defaultVal1 && defaultVal1 !== curVal);
+            checkElementSingleValue(eleChild, eleChild, eleVal, defaultVal1);
+            assert(justForCodeCover === true);
+
+            jdx(idRoot).set(jsonSet, '');
+            var defaultVal1 = '';
+            assert(eleChild[eleVal] === defaultVal1 && defaultVal1 !== curVal);
+            checkElementSingleValue(eleChild, eleChild, eleVal, defaultVal1);
+            assert(justForCodeCover === true);
+
+            jsonSet[jsonKey] = {a:1}
+            jdx(idRoot).set(jsonSet, {a:1});
             var defaultVal1 = '';
             assert(eleChild[eleVal] === defaultVal1 && defaultVal1 !== curVal);
             checkElementSingleValue(eleChild, eleChild, eleVal, defaultVal1);
@@ -1107,31 +1084,25 @@ function check2ArrayEqual(list1, list2) {
     })
 }
 
-function ElementsGroupArray(list, attrChk, attrVal, listV1, listV0) {
+function ElementsGroupArray(list, attrChk, attrVal, listV) {
     assert(Array.isArray(list));
-    assert(Array.isArray(listV1));
-    assert(Array.isArray(listV0));
+    assert(Array.isArray(listV));
     checkIsValidValue(attrChk);
-    listV1.length = 0;
-    listV0.length = 0;
+    listV.length = 0;
 
     list.forEach(function (item) {
         var chk = item[attrChk];
         var val = attrVal? item[attrVal]: item;
         if (Boolean(chk)) {
-            listV1.push(val);
+            listV.push(val);
         }
-        else {
-            listV0.push(val);
-        }
+        
     })
 }
 
-function checkElementsGroupValue(jsonVal, listV1, listV0) {
+function checkElementsGroupValue(jsonVal, listV) {
     checkIsValidValue(jsonVal);
-    checkIsValidValue(listV1);
-    checkIsValidValue(listV0);
+    checkIsValidValue(listV);
 
-    check2ArrayEqual(jsonVal.v1, listV1);
-    check2ArrayEqual(jsonVal.v0, listV0);
+    check2ArrayEqual(jsonVal, listV);  
 }

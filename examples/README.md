@@ -20,7 +20,7 @@ bower i moment xss json3`
 
 
 ## config.html
-展示配置选项key，v1与v0的使用
+展示配置选项key的使用
 
 
 ## config-elefilter.html

@@ -36,7 +36,7 @@
                 alert('Please Input a password');
             }
 
-            var list = eles['fruit'].v0;
+            var list = eles['fruit'];
             if (list.length == 3) {
                 <!--BUG 设置的样式无效-->
                 setEleListIsValid(list, '');
@@ -84,15 +84,20 @@
                 Hidden: <input name="_csrf" type="hidden" value=""/> <br/>
                 Name: <input name="name" type="text" value="" /> <br/>
                 Password: <input name="password" type="password" value="" /> <br/>
-                Sex: <input name="sex" type="radio" value="Male" checked="checked"/>
-                <input name="sex" type="radio" value="Female"/> <br/>
+                Sex: <input name="sex" type="radio" value="Male" checked="checked"/>Male
+                <input name="sex" type="radio" value="Female"/>Female <br/>
                 Fruit: <input name="fruit" type="checkbox" value="Apple"/>Apple
-                <input name="fruit" type="checkbox"  class="checkboxFour" value="Banana"/>Banana
+                <input name="fruit" type="checkbox" value="Banana"/>Banana
                 <input name="fruit" type="checkbox" value="Orange"/>Orange <br/>
                 Country: <select name="country">
                 <option value="">--请选择--</option>
                 <option value="中国">中国</option>
                 <option value="美国">美国</option>
+                </select><br/>
+                Sport: <select name="sport" multiple="multiple" >
+                <option value="足球">足球</option>
+                <option value="篮球">篮球</option>
+                <option value="乒乓球">乒乓球</option>
                 </select><br/>
                 Note: <textarea name="note"></textarea><br/>
                 <input type="reset" value="Reset"/> <br/>

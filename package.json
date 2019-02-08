@@ -1,6 +1,6 @@
 {
   "name": "jdataexchange",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A javascript library can be used for data exchange between html element and json data",
   "main": "index.js",
   "directories": {
@@ -11,12 +11,14 @@
     "test": "./node_modules/.bin/mocha ./test/test.mocha.js "
   },
   "keywords": [
+    "jdataexchange",
     "dataexchange",
     "jdx",
     "html",
     "json",
     "data",
     "form",
+    "formdata",
     "dom",
     "element"
   ],

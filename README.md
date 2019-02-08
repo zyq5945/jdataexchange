@@ -28,8 +28,8 @@ jDataExchange与html5的formdata的区别：
     Hidden: <input name="_csrf" type="hidden" value=""/> <br/>
     Name: <input name="name" type="text" value="" /> <br/>
     Password: <input name="password" type="password" value="" /> <br/>
-    Sex: <input name="sex" type="radio" value="Male" checked="checked"/>
-    <input name="sex" type="radio" value="Female"/> <br/>
+    Sex: <input name="sex" type="radio" value="Male" checked="checked"/>Male
+    <input name="sex" type="radio" value="Female"/>Female <br/>
     Fruit: <input name="fruit" type="checkbox" value="Apple"/>Apple
     <input name="fruit" type="checkbox" value="Banana"/>Banana
     <input name="fruit" type="checkbox" value="Orange"/>Orange <br/>
@@ -37,6 +37,11 @@ jDataExchange与html5的formdata的区别：
     <option value="">--请选择--</option>
     <option value="中国">中国</option>
     <option value="美国">美国</option>
+    </select><br/>
+    Sport: <select name="sport" multiple="multiple" >
+    <option value="足球">足球</option>
+    <option value="篮球">篮球</option>
+    <option value="乒乓球">乒乓球</option>
     </select><br/>
     Note: <textarea name="note"></textarea><br/>
     <input type="reset" value="Reset"/> <br/>
@@ -60,32 +65,13 @@ jdx("myform").get(jsonObj);
     "note": "xxxxxxxx",
     "name": "xxxxxxxx",
     "password": "xxxxxxxx",
-    "sex": {
-        "v1": [
+    "sex": "xxxxxxxx",
+    "fruit": [
+        "xxxxxxxx",
         "xxxxxxxx"
         ],
-        "v0": [
-            "xxxxxxxx"
-        ]
-    },
-    "fruit": {
-        "v1": [
-            "xxxxxxxx",
-            "xxxxxxxx"
-        ],
-        "v0": [
-            "xxxxxxxx"
-        ]
-    },
-    "country": {
-        "v1": [
-            "xxxxxxxx"
-        ],
-        "v0": [
-            "xxxxxxxx",
-            "xxxxxxxx"
-        ]
-    }
+        ,
+    "country": "xxxxxxxx",
 }
 ```
 
@@ -141,42 +127,37 @@ DataExchange.prototype.getElements = function (jsonObj, paramConfig)
 ## 默认配置参数
 ```javascript
 var defaultConfig = {
-    // element属性值与json键一一对应起来，默认是element的name属性
-    // 调用set函数的会做两个特殊处理：
-    //  1. 当有同名的函数存在会调用函数计算结果值给element，返回null或者undefined忽略设置
-    /**function(eleItem, attrName, jsonObj, value, jsonKey, config)
-     *
-     * @brief 通过调用同名的function，将返回值设置给eleItem的attrName属性
-     * @param eleItem 要设置的element
-     * @param attrName 要设置的element的要设置的属性名称
-     * @param jsonObj 对应的jsonObj
-     * @param value 原始value将要设置给element的attrName属性
-     * @param jsonKey 对应的jsonObj的key
-     * @param config 配置参数
-     * @return 最终的value将要设置给element的attrName属性，返回null或者undefined忽略设置
-     */
-    //  2. 当有同名的Object{v1:[...]}，会去v1数组的第一个值作为数据值
-    key: 'name',
+        // element属性值与json键一一对应起来，默认是element的name属性
+        // 调用set函数的会做两个特殊处理：
+        // 当有同名的函数存在会调用函数计算结果值给element，返回null或者undefined忽略设置
+        /* function(eleItem, attrName, jsonObj, value, jsonKey, config)
+         *
+         * @brief 通过调用同名的function，将返回值设置给eleItem的attrName属性
+         * @param eleItem 要设置的element
+         * @param attrName 要设置的element的要设置的属性名称
+         * @param jsonObj 对应的jsonObj
+         * @param value 原始value将要设置给element的attrName属性
+         * @param jsonKey 对应的jsonObj的key
+         * @param config 配置参数
+         * @return 最终的value将要设置给element的attrName属性，返回null或者undefined忽略设置
+         */
+        
+        key: 'name',
 
-    // 具有分组的element(input和radio的check，select的option)，选中分组
-    v1: 'v1',
-    // 具有分组的element(input和radio的check，select的option)，未选中分组
-    v0: 'v0',
+        // 函数 function(eleItem, jsonKey, config) 返回true表示处理该eleItem,否则忽略
+        eleFilter: null,
 
-    // 函数 function(eleItem, jsonKey, config) 返回true表示处理该eleItem,否则忽略
-    eleFilter: null,
+        // 函数 function((eleItem, attrName, jsonObj, value, jsonKey, config) 返回进行xss处理后的字符串值，返回null或者undefined忽略设置
+        xssFilter: null,
 
-    // 函数 function((eleItem, attrName, jsonObj, value, jsonKey, config) 返回进行xss处理后的字符串值，返回null或者undefined忽略设置
-    xssFilter: null,
+        // 忽略处理element的data-jdx-ignore属性为true的元素
+        ignoreFlag: 'data-jdx-ignore',
 
-    // 忽略处理element的data-jdx-ignore属性为true的元素
-    ignoreFlag: 'data-jdx-ignore',
+        // 将设置data-jdx-bind绑定的属性值
+        customBind: 'data-jdx-bind',
 
-    // 将设置data-jdx-bind绑定的属性值
-    customBind: 'data-jdx-bind',
-
-    // 需要处理的只有一个值域的element
-    htmlElements: [
+        // 需要处理的只有一个值域的element
+        htmlElements: [
             {name: 'textarea', value: 'value', input: true},
             {name: 'label', value: 'innerHTML'},
             {name: 'button', value: 'disabled'},
@@ -191,9 +172,10 @@ var defaultConfig = {
             {name: 'h5', value: 'innerHTML'},
             {name: 'h6', value: 'innerHTML'},
             {name: 'span', value: 'innerHTML'},
+            {name: 'p', value: 'innerHTML'},
             {name: 'div', value: 'className'}
-    ]
-};
+        ]
+    };
 ```
 
 ## 代码测试
@@ -207,7 +189,7 @@ npm install
 ```
 npm run test
 ```
-3. 代码覆盖(覆盖率99%)
+3. 代码覆盖(覆盖率98%)
 ```
 npm run cover
 ```

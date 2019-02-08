@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Config key v1 v0 eleFilter</title>
-    <script type="text/javascript" src="../src/jdataexchange.js"></script>
-
+    <title>Config key </title>
     <script type="text/javascript" src="../src/jdataexchange.js"></script>
 
     <script type="text/javascript">
-        var config = {key:"data-key", v1:"yes", v0:"no"};
+        var config = {key:"data-key"};
         var input = jdx('myinput', config);
         var output = null;
         var data = {};
@@ -19,32 +17,12 @@
                 "note": "123",
                 "name": "33",
                 "password": "pwd123",
-                "sex": {
-                    "yes": [
-                        "Female"
-                    ],
-                    "no": [
-                        "Male"
-                    ]
-                },
-                "fruit": {
-                    "yes": [
-                        "Apple",
-                        "Orange"
-                    ],
-                    "no": [
-                        "Banana"
-                    ]
-                },
-                "country": {
-                    "yes": [
-                        "中国"
-                    ],
-                    "no": [
-                        "美国",
-                        ""
-                    ]
-                }
+                "sex": "Female",
+                "fruit": [
+                    "Apple",
+                    "Banana"
+                ],
+                "country": "中国",
             };
 
             input.set({json:JSON.stringify(data, null, 4)});
@@ -109,7 +87,7 @@
                 <!--div默认是绑定className，现在修改为innerHTML-->
                 Note 1: <div data-key="note" style="display: inline" data-jdx-bind="innerHTML">Test Text</div><br/>
                 <!--忽略处理data-jdx-ignore属性为true的元素-->
-                Note 2: <label data-key="note"data-jdx-ignore="yes">No Changed</label><br/>
+                Note 2: <label data-key="note" data-jdx-ignore="yes">No Changed</label><br/>
             </div>
         </td>
     </tr>

@@ -3,31 +3,20 @@
 // PHP文件最好是无BOM的UTF8文件格式，否则可能出现乱码
 $str = '
 {
-    "note": "123123",
-    "_csrf": "",
-    "name": "sfs中df",
-    "password": "123aabbcc",
-    "sex": {
-        "v1": [
-            "Male"
-        ],
-        "v0": [
-            "Female"
-        ]
-    },
-    "fruit": {
-        "v1": ["Apple","Banana"],
-        "v0": [ "Orange" ]
-    },
-    "country": {
-        "v1": [
-            "中国"
-        ],
-        "v0": [
-            "",
-            "美国"
-        ]
-    }
+    "_csrf": "Tue, 05 Feb 2019 13:02:16 GMT",
+    "note": "i am here!!",
+    "name": "sdf",
+    "password": "sdfsdf",
+    "sex": "Female",
+    "fruit": [
+        "Apple",
+        "Banana"
+    ],
+    "country": "中国",
+    "sport": [
+        "足球",
+        "乒乓球"
+    ]
 }
 ';
 
