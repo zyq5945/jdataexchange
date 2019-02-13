@@ -3,7 +3,7 @@
 `npm -g i bower
 bower i moment xss json3`
 
-## simple.html
+## [simple.html](simple.html)
 展示了json数据与form进行数据获取与设置
 
 
@@ -11,7 +11,7 @@ bower i moment xss json3`
 展示了使用JSON3在IE6下使用json数据与form进行数据获取与设置
 
 
-## display.html
+## [display.html](display.html)
 展示了json数据设置到显示html标签中
 
 
@@ -19,11 +19,11 @@ bower i moment xss json3`
 展示了json数据使用函数的方式设置到显示html标签中
 
 
-## config.html
+## [config.html](config.html)
 展示配置选项key的使用
 
 
-## config-elefilter.html
+## [config-elefilter.html](config-elefilter.html)
 展示配置选项elefilter的使用
 
 
@@ -31,7 +31,7 @@ bower i moment xss json3`
 展示配置选项xssfilter的使用
 
 
-## elements.html
+## [elements.html](elements.html)
 展示了使用getElements获取标签进行操作标签例子
 
 
