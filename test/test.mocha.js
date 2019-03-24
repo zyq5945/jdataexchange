@@ -356,7 +356,7 @@ describe('test input radio', function () {
             const eleChild3 = document.getElementById(`${idChild}3`);
 
             jdx(eleRoot).getElements(eles);           
-            check2ArrayEqual(eles[jsonKey] , [eleChild1]);
+            assert(eles[jsonKey] === eleChild1);
         });
 
         it('test jdx get', function () {
@@ -506,8 +506,8 @@ describe('test select simple', function () {
             const eleChild2 = document.getElementById(`${idChild}2`);
             const eleChild3 = document.getElementById(`${idChild}3`);
 
-            jdx(eleRoot).getElements(eles);           
-            check2ArrayEqual(eles[jsonKey] , [eleChild1]);
+            jdx(eleRoot).getElements(eles);          
+            assert(eles[jsonKey] === eleChild1);
         });
 
         it('test jdx get', function () {
@@ -755,7 +755,7 @@ describe('test lable className (config data-jdx-bind)', function () {
     const jsonKey = "target";
     const html = `
  <div id="${idRoot}">
-     <label id="${idChild}" ${eleKey}="${jsonKey}" data-jdx-bind="class">${defaultVal}</label>
+     <label id="${idChild}" ${eleKey}="${jsonKey}" data-jdx-bind="className">${defaultVal}</label>
  </div>
  `;
 
@@ -785,6 +785,92 @@ describe('test lable className (config data-jdx-bind)', function () {
         });
     });
 });
+
+
+
+describe('test div className', function () {
+    const defaultVal = "TestValue";
+    const eleVal = "className";
+    const eleKey = "name";
+    const idRoot = "root";
+    const idChild = "child";
+    const jsonKey = "target";
+    const html = `
+ <div id="${idRoot}">
+     <div id="${idChild}" ${eleKey}="${jsonKey}" >${defaultVal}</div>
+ </div>
+ `;
+
+    before(function () {
+        return jsdompromise(html, scripts);
+    });
+
+    describe('test jdx functions', function () {
+        var jsonSet = {};
+        var eles = {};
+        it('test jdx getElements', function () {
+            const eleRoot = document.getElementById(idRoot);
+            const eleChild = document.getElementById(idChild);
+            assert(eleRoot && eleChild);
+            jdx(eleRoot).getElements(eles);
+            assert(eles[jsonKey] === eleChild);
+        });
+
+        it('test jdx set', function () {
+            const eleRoot = document.getElementById(idRoot);
+            const eleChild = document.getElementById(idChild);
+            var curVal = "Input Value111";
+            jsonSet[jsonKey] = curVal;
+            jdx(eleRoot).set(jsonSet);
+            assert(jsonSet[jsonKey] === curVal && eleChild[eleVal] === curVal);
+            checkElementSingleValue(eleChild, eleChild, eleVal, jsonSet[jsonKey]);
+        });
+    });
+});
+
+
+
+
+describe('test div data-k', function () {
+    const defaultVal = "TestValue";
+    const eleVal = "data-v";
+    const eleKey = "data-k";
+    const idRoot = "root";
+    const idChild = "child";
+    const jsonKey = "target";
+    const html = `
+ <div id="${idRoot}">
+     <div id="${idChild}" ${eleKey}="${jsonKey}" ${eleVal}="${eleVal}">${defaultVal}</div>
+ </div>
+ `;
+
+    before(function () {
+        return jsdompromise(html, scripts);
+    });
+
+    describe('test jdx functions', function () {
+        var jsonSet = {};
+        var eles = {};
+        var cfg = {key:eleKey};
+        it('test jdx getElements', function () {
+            const eleRoot = document.getElementById(idRoot);
+            const eleChild = document.getElementById(idChild);
+            assert(eleRoot && eleChild);
+            jdx(eleRoot, cfg).getElements(eles);
+            assert(eles[jsonKey] === eleChild);
+        });
+
+        it('test jdx set', function () {
+            const eleRoot = document.getElementById(idRoot);
+            const eleChild = document.getElementById(idChild);
+            var curVal = "Input Value111";
+            jsonSet[jsonKey] = curVal;
+            jdx(eleRoot, cfg).set(jsonSet, {customBind:eleVal});
+            assert(getElementValue(eleChild, eleVal) === curVal);            
+        });
+    });
+});
+
 
 describe('test lable innerHTML', function () {
     const defaultVal = "TestValue";
@@ -1023,6 +1109,12 @@ describe('test config for get and set', function () {
             jdx(idRoot, config).set(jsonSet);
             assert(eleChild1[eleVal] === jsonSet[jsonKey1]);
             assert(eleChild2[eleVal] === 'Input Value002');
+
+            config = {
+                xssFilter :function (){return null;}
+            };
+            jdx(idRoot, config).set(jsonSet);
+
             assert(justForCodeCover === true);
         });
 
@@ -1046,12 +1138,19 @@ describe('test config for get and set', function () {
             };
             jdx(idRoot, config).set(jsonSet);
             assert(eleChild1[eleVal] === noXssHtml);
-
+         
         });
     });
 });
 
-
+function getElementValue(eleItem, attrName) {
+        if (attrName in eleItem) {
+            return eleItem[attrName];
+        }
+        else {
+            return eleItem.getAttribute(attrName);
+        }
+}
 
 function checkIsValidValue(val) {
     assert(val !== null && val !== undefined);

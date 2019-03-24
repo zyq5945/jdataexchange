@@ -1,7 +1,7 @@
 # Examples
 例子项目依赖了moment,xss和json3,想要完整的查看例子，请使用如下命令安装依赖
-`npm -g i bower
-bower i moment xss json3`
+````npm -g i bower
+bower i moment xss json3````
 
 ## [simple.html](simple.html)
 展示了json数据与form进行数据获取与设置
