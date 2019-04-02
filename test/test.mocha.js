@@ -68,7 +68,7 @@ describe('jdx environment test', function () {
             assert.throws(function () {
                     jdx('root', '11');
                 }
-                , /Config parameter is invalid!/
+                , /Config parameter is not an object!/
             );
             assert.throws(function () {
                     jdx('noid').get(val);
@@ -78,7 +78,7 @@ describe('jdx environment test', function () {
             assert.throws(function () {
                     jdx(ele).get('11');
                 }
-                , /Json parameter is invalid!/
+                , /Json parameter is not an object!/
             );
             assert.throws(function () {
                     jdx('root', null, invalidHtml);

@@ -13,13 +13,13 @@
     // 默认配置参数
     var defaultConfig = {
         // element属性值与json键一一对应起来，默认是element的name属性
-        // 调用set函数的会做两个特殊处理：
+        // 调用set函数的会做特殊处理：
         // 当有同名的函数存在会调用函数计算结果值给element，返回null或者undefined忽略设置
         /* function(eleItem, attrName, jsonObj, value, jsonKey, config)
          *
          * @brief 通过调用同名的function，将返回值设置给eleItem的attrName属性
          * @param eleItem 要设置的element
-         * @param attrName 要设置的element的要设置的属性名称
+         * @param attrName 要设置的element的属性名称
          * @param jsonObj 对应的jsonObj
          * @param value 原始value将要设置给element的attrName属性
          * @param jsonKey 对应的jsonObj的key
@@ -111,13 +111,13 @@
 
     function checkJsonObjectIsValid(jsonObj) {
         if (!isValidObject(jsonObj)) {
-            throw new Error('Json parameter is invalid!');
+            throw new Error('Json parameter is not an object!');
         }
     }
 
     function checkConfigIsValid(jsonObj) {
         if (!isValidObject(jsonObj)) {
-            throw new Error('Config parameter is invalid!');
+            throw new Error('Config parameter is not an object!');
         }
     }
 
@@ -337,8 +337,10 @@
                         case 'checkbox':
                             getValueWithGroup(eleItem, 'value', jsonObj, jsonKey, 'checked', false, config);
                             break;
-
                         case 'file':
+                            getValueWithGroup(eleItem, 'files', jsonObj, jsonKey, null, false, config);
+                            break;
+                            
                         case 'button':
                         case 'reset':
                         case 'submit':

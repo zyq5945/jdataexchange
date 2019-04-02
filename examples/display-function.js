@@ -1,6 +1,6 @@
 
 
-/**
+/*
  *
  * @brief 通过调用同名的function，将返回值设置给eleItem的attrName属性
  * @param eleItem 要设置的element

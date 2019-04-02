@@ -16,6 +16,7 @@ jDataExchange与html5的formdata的区别：
 
 缺点：  
 1. 不支持file类型的获取与设置
+2. 一次获取与设置仅支持各标签的一个属性
 
 ### [示例在表单中使用](./examples/simple.html)
 ![simple](./image/simple.gif)
@@ -159,23 +160,14 @@ var defaultConfig = {
         // 将设置data-jdx-bind绑定的属性值
         customBind: 'data-jdx-bind',
 
-        // 需要处理的只有一个值域的element
+        // 需要特殊设置的标签的值域，否则就按innerHTML处理
         htmlElements: [
-            {name: 'textarea', value: 'value', input: true},
-            {name: 'label', value: 'innerHTML'},
             {name: 'button', value: 'disabled'},
             {name: 'a', value: 'href'},
             {name: 'img', value: 'src'},
-            {name: 'td', value: 'innerHTML'},
             {name: 'tr', value: 'className'},
-            {name: 'h1', value: 'innerHTML'},
-            {name: 'h2', value: 'innerHTML'},
-            {name: 'h3', value: 'innerHTML'},
-            {name: 'h4', value: 'innerHTML'},
-            {name: 'h5', value: 'innerHTML'},
-            {name: 'h6', value: 'innerHTML'},
-            {name: 'span', value: 'innerHTML'},
-            {name: 'p', value: 'innerHTML'},
+            {name: 'ul', value: 'className'},
+            {name: 'ol', value: 'className'},
             {name: 'div', value: 'className'}
         ]
     };
